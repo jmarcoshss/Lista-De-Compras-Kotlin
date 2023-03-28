@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/lista_de_produtos_menu_ajuda"
+        android:icon="@drawable/baseline_help_24"
+        android:title="Ajuda"
+        app:showAsAction="ifRoom" />
+
+</menu>

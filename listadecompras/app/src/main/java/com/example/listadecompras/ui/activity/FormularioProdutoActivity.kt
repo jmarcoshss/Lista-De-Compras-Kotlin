@@ -1,0 +1,99 @@
+package com.example.listadecompras.ui.activity
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.listadecompras.ui.adapter.ListaDeProdutosAdapter
+import com.example.listadecompras.data.LdcDataBase
+import com.example.listadecompras.databinding.ActivityFormularioProdutoBinding
+import com.example.listadecompras.model.Produto
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.math.BigDecimal
+
+class FormularioProdutoActivity : AppCompatActivity() {
+
+    private val binding by lazy { ActivityFormularioProdutoBinding.inflate(layoutInflater) }
+    private val produtoDao by lazy {
+        val db = LdcDataBase.instancia(this)
+        db.produtoDao()
+    }
+    private var produtoId = 0L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+        configuraBotaoSalvar()
+        title = "Cadastrar Novo Produto"
+        editar()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        tentaCarregar()
+    }
+
+    private fun tentaCarregar() {
+        lifecycleScope.launch {
+            val produto = withContext(Dispatchers.IO) {
+                produtoDao.buscaTodosID(produtoId)
+            }
+            produto?.let {
+                title = "Editar Produto"
+                preencheCampos(it)
+            }
+        }
+    }
+
+    private fun editar() {
+        produtoId = intent.getLongExtra(CHAVE_PRODUTO_ID, 0L)
+    }
+
+    private fun preencheCampos(produtoCarregado: Produto) {
+        binding.activityFormularioProdutoNome.setText(produtoCarregado.nome)
+        binding.activityFormularioProdutoQuantidade.setText(produtoCarregado.quantidade.toPlainString())
+    }
+
+    private fun configuraBotaoSalvar() {
+        val botaoSalvar = binding.activityFormularioProdutoSalvar
+        botaoSalvar.setOnClickListener {
+            val produtoNovo = criaProduto()
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    produtoDao.salva(produtoNovo)
+                }
+                finish()
+            }
+        }
+    }
+
+    private fun criaProduto(): Produto {
+        val campoNome = binding.activityFormularioProdutoNome
+        val nome = campoNome.text.toString()
+        val campoQuantidade = binding.activityFormularioProdutoQuantidade
+        val quantidadeEmTexto = campoQuantidade.text.toString()
+        val quantidade = if (quantidadeEmTexto.isBlank()) {
+            BigDecimal.ZERO
+        } else {
+            BigDecimal(quantidadeEmTexto)
+        }
+        val campoUnidade = binding.activityFormularioProdutoUnidade
+        val unidade = campoUnidade.text.toString()
+
+
+
+        return Produto(
+            id = produtoId,
+            nome = nome,
+            quantidade = quantidade,
+            unidade = unidade
+        )
+
+    }
+
+
+}

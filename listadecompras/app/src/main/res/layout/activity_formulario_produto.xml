@@ -27,19 +27,29 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="Quantidade"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="@id/activity_formulario_produto_nome"
             app:layout_constraintStart_toStartOf="@id/activity_formulario_produto_nome"
             app:layout_constraintTop_toBottomOf="@id/activity_formulario_produto_nome" />
 
         <Button
-            android:id="@+id/activity_formulario_produto_button"
+            android:id="@+id/activity_formulario_produto_salvar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="salvar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_formulario_produto_unidade" />
+
+        <EditText
+            android:id="@+id/activity_formulario_produto_unidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="digite a unidade de medida"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/activity_formulario_produto_quantidade" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
