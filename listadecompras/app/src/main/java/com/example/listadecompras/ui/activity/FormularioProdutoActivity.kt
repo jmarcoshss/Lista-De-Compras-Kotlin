@@ -1,26 +1,25 @@
 package com.example.listadecompras.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.listadecompras.ui.adapter.ListaDeProdutosAdapter
 import com.example.listadecompras.data.LdcDataBase
 import com.example.listadecompras.databinding.ActivityFormularioProdutoBinding
+import com.example.listadecompras.model.Lista
 import com.example.listadecompras.model.Produto
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
-class FormularioProdutoActivity : AppCompatActivity() {
+class FormularioProdutoActivity : ListaBaseActivity() {
 
     private val binding by lazy { ActivityFormularioProdutoBinding.inflate(layoutInflater) }
     private val produtoDao by lazy {
-        val db = LdcDataBase.instancia(this)
-        db.produtoDao()
+        LdcDataBase.instancia(this).produtoDao()
     }
     private var produtoId = 0L
 
@@ -30,6 +29,12 @@ class FormularioProdutoActivity : AppCompatActivity() {
         configuraBotaoSalvar()
         title = "Cadastrar Novo Produto"
         editar()
+
+        lifecycleScope.launch {
+            lista.filterNotNull().collect {
+
+            }
+        }
     }
 
     override fun onResume() {
@@ -56,22 +61,28 @@ class FormularioProdutoActivity : AppCompatActivity() {
     private fun preencheCampos(produtoCarregado: Produto) {
         binding.activityFormularioProdutoNome.setText(produtoCarregado.nome)
         binding.activityFormularioProdutoQuantidade.setText(produtoCarregado.quantidade.toPlainString())
+        binding.activityFormularioProdutoUnidade.setText(produtoCarregado.unidade)
+        binding.activityFormularioProdutoValor.setText(produtoCarregado.valor.toPlainString())
     }
 
     private fun configuraBotaoSalvar() {
         val botaoSalvar = binding.activityFormularioProdutoSalvar
         botaoSalvar.setOnClickListener {
-            val produtoNovo = criaProduto()
+
             lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    produtoDao.salva(produtoNovo)
+                lista.value?.let {
+                    val produtoNovo = criaProduto(it.listaId)
+                    withContext(Dispatchers.IO) {
+                        produtoDao.salva(produtoNovo)
+                    }
+                    finish()
                 }
-                finish()
+
             }
         }
     }
 
-    private fun criaProduto(): Produto {
+   private fun criaProduto(listaId:Long): Produto {
         val campoNome = binding.activityFormularioProdutoNome
         val nome = campoNome.text.toString()
         val campoQuantidade = binding.activityFormularioProdutoQuantidade
@@ -83,6 +94,13 @@ class FormularioProdutoActivity : AppCompatActivity() {
         }
         val campoUnidade = binding.activityFormularioProdutoUnidade
         val unidade = campoUnidade.text.toString()
+       val campoValor = binding.activityFormularioProdutoValor
+       val valorEmTexto = campoValor.text.toString()
+       val valor = if (valorEmTexto.isBlank()) {
+           BigDecimal.ZERO
+       } else {
+           BigDecimal(valorEmTexto)
+       }
 
 
 
@@ -90,7 +108,9 @@ class FormularioProdutoActivity : AppCompatActivity() {
             id = produtoId,
             nome = nome,
             quantidade = quantidade,
-            unidade = unidade
+            unidade = unidade,
+            listaId = listaId,
+            valor = valor
         )
 
     }

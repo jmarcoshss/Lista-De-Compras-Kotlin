@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/lista_card_botao_remover"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:backgroundTint="#E60808"
+            android:layout_marginStart="-10dp"
+            app:icon="@drawable/baseline_delete_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/lista_card_nome"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lista_card_botao_editar" />
+
+        <Button
+            android:id="@+id/lista_card_botao_editar"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:backgroundTint="#4CAF50"
+            app:icon="@drawable/baseline_edit_24"
+            app:layout_constraintBottom_toTopOf="@id/lista_card_botao_remover"
+            app:layout_constraintEnd_toStartOf="@id/lista_card_nome"
+            app:layout_constraintStart_toStartOf="@id/lista_card_botao_remover"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lista_card_nome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="nome da lista de lista ue eu fiz especialmente grande"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/lista_card_descricao"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lista_card_botao_editar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lista_card_descricao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="3"
+            android:text="orem ipsum dolor sit amet, consectetur adipiscing elit. Sed diam sapien, lacinia in nisi quis, semper auctor justo. Pellentesque eget odio feugiat, convallis diam ac, viverra diam. Cras luctus consequat lorem a sagittis. Morbi interdum non augue sed rutrum. Nunc ullamcorper vitae magna sit amet mattis. Praesent eu pulvinar eros. Phasellus et libero gravida, faucibus nunc nec, molestie velit."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lista_card_botao_editar"
+            app:layout_constraintTop_toBottomOf="@id/lista_card_nome" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,66 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    app:cardCornerRadius="16dp"
-    android:elevation="10dp"
-    android:padding="8dp"
+    android:checkable="true"
     android:clickable="true"
     android:focusable="true"
-    android:checkable="true">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/produto_card_valor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            android:text="9.99"
+            android:textColor="#64A85C"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/produto_card_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginVertical="8dp"
+            android:layout_marginLeft="8dp"
             android:text="café"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.1"
+            android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/produto_card_valor"/>
+
         <TextView
             android:id="@+id/produto_card_quantidade"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
             android:text="2,121212"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginVertical="8dp"
-            android:layout_marginHorizontal="16dp"
-            app:layout_constraintTop_toBottomOf="@id/produto_card_nome"
-            app:layout_constraintStart_toEndOf="@id/produto_card_unidade"
-            app:layout_constraintEnd_toEndOf="@id/produto_card_nome"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/produto_card_nome"
+           app:layout_constraintStart_toEndOf="@id/produto_card_unidade"/>
+
         <TextView
             android:id="@+id/produto_card_unidade"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="kg"
-            android:textStyle="bold"
-            android:textSize="20sp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
-            app:layout_constraintStart_toStartOf="@id/produto_card_nome"
-            app:layout_constraintEnd_toStartOf="@id/produto_card_quantidade"
-            app:layout_constraintTop_toBottomOf="@id/produto_card_nome"
+            android:text="X"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-
+            app:layout_constraintEnd_toStartOf="@id/produto_card_quantidade"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/produto_card_nome" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

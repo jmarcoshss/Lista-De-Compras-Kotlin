@@ -11,19 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Listadecompras"
         tools:targetApi="31">
+        <activity android:name=".ui.activity.ListaDeProdutosActivity" />
+        <activity android:name=".ui.activity.FormularioProdutoActivity" />
         <activity
-            android:name=".ui.activity.ListaDeProdutosActivity"
+            android:name=".ui.activity.ListaDeListaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity
-            android:name=".ui.activity.FormularioProdutoActivity"
-            android:exported="true" />
+        <activity android:name=".ui.activity.FormularioListaActivity" />
     </application>
 
 </manifest>

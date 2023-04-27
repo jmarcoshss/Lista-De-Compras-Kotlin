@@ -5,24 +5,27 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.listadecompras.R
-import com.example.listadecompras.ui.adapter.ListaDeProdutosAdapter
 import com.example.listadecompras.data.LdcDataBase
 import com.example.listadecompras.databinding.ActivityListaDeProdutosBinding
+import com.example.listadecompras.extensions.formataParaMoedaBrasileira
+import com.example.listadecompras.model.Produto
+import com.example.listadecompras.ui.adapter.ListaDeProdutosAdapter
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 
-class ListaDeProdutosActivity : AppCompatActivity() {
+class ListaDeProdutosActivity : ListaBaseActivity() {
 
     private val produtoDao by lazy {
-        val db = LdcDataBase.instancia(this)
-        db.produtoDao()
+        LdcDataBase.instancia(this).produtoDao()
     }
+
     private val adapter = ListaDeProdutosAdapter(context = this)
     private val binding by lazy { ActivityListaDeProdutosBinding.inflate(layoutInflater) }
 
@@ -31,17 +34,16 @@ class ListaDeProdutosActivity : AppCompatActivity() {
         setContentView(binding.root)
         configuraRecyclerView()
         configuraFAB()
+        lifecycleScope.launch {
+            launch {
+                lista.filterNotNull().collect {
+                    buscaProdutosDaLista(it.listaId)
+
+                }
+            }
+        }
     }
 
-    override fun onResume() {
-        lifecycleScope.launch {
-            val produtos = withContext(Dispatchers.IO) {
-                produtoDao.buscaTodos()
-            }
-            adapter.atualiza(produtos)
-        }
-        super.onResume()
-    }
 
     fun configuraRecyclerView() {
         val recyclerView = binding.activityListaDeProdutosRecyclerview
@@ -56,14 +58,30 @@ class ListaDeProdutosActivity : AppCompatActivity() {
         }
         adapter.quandoClicaEmRemover = {
             lifecycleScope.launch {
-                val produtos = withContext(Dispatchers.IO) {
-                    produtoDao.remover(it)
-                    produtoDao.buscaTodos()
+                withContext(Dispatchers.IO) { produtoDao.remover(it) }
+                lista.firstOrNull()?.let {
+                    buscaProdutosDaLista(it.listaId)
                 }
-                adapter.atualiza(produtos)
             }
-
         }
+    }
+
+    suspend fun buscaProdutosDaLista(listaId: Long) {
+        produtoDao.buscaTodosProdutosDaLista(listaId).collect { produto ->
+            adapter.atualiza(produto)
+            exibeValorTotal(produto)
+        }
+    }
+
+    private fun exibeValorTotal(produto: List<Produto>) {
+        val campoValorTotal = binding.activityListaDeProdutosValorTotal
+        var resultado = 0
+        produto.forEach {
+                val multiplicacao = it.valor.toInt() * it.quantidade.toInt()
+                resultado += multiplicacao
+        }
+        val bdResultado = BigDecimal(resultado)
+        campoValorTotal.text = bdResultado.formataParaMoedaBrasileira()
     }
 
     fun configuraFAB() {
@@ -88,6 +106,11 @@ class ListaDeProdutosActivity : AppCompatActivity() {
             R.id.lista_de_produtos_menu_ajuda -> {
                 mostra()
             }
+            R.id.lista_de_produtos_menu_sair -> {
+                val intent = Intent(this, ListaDeListaActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -106,5 +129,6 @@ Para editar ou remover, clique no item da lista e aparecerá o menu """.trimMarg
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
-
 }
+
+

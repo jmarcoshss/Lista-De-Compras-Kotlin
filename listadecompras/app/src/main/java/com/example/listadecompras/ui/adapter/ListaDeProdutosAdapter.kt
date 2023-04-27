@@ -1,8 +1,8 @@
 package com.example.listadecompras.ui.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.listadecompras.R
 import com.example.listadecompras.databinding.ProdutoCardBinding
+import com.example.listadecompras.extensions.formataParaMoedaBrasileira
 import com.example.listadecompras.model.Produto
-import com.example.listadecompras.ui.activity.CHAVE_PRODUTO_ID
 
 class ListaDeProdutosAdapter(
     produtos: List<Produto> = emptyList(),
@@ -55,6 +55,9 @@ class ListaDeProdutosAdapter(
             val unidade = binding.produtoCardUnidade
             unidade.text = produto.unidade
 
+            val valor = binding.produtoCardValor
+            valor.text = produto.valor.formataParaMoedaBrasileira()
+
             binding.card.setOnCheckedChangeListener { card, isChecked ->
                 salvaEstadoCheckbox(produto, isChecked)
             }
@@ -83,7 +86,6 @@ class ListaDeProdutosAdapter(
             }
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -124,5 +126,6 @@ class ListaDeProdutosAdapter(
         val preferencias = context.getSharedPreferences("arquivokotlin", 0)
         return preferencias.edit()
     }
+
 
 }

@@ -7,5 +7,10 @@
         android:icon="@drawable/baseline_help_24"
         android:title="Ajuda"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/lista_de_produtos_menu_sair"
+        android:icon="@drawable/baseline_exit_to_app_24"
+        android:title="sair"
+        app:showAsAction="ifRoom" />
 
 </menu>
