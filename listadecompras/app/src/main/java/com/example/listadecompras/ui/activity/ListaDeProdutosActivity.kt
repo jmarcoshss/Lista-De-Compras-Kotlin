@@ -75,13 +75,12 @@ class ListaDeProdutosActivity : ListaBaseActivity() {
 
     private fun exibeValorTotal(produto: List<Produto>) {
         val campoValorTotal = binding.activityListaDeProdutosValorTotal
-        var resultado = 0
+        var resultado = BigDecimal(0)
         produto.forEach {
-                val multiplicacao = it.valor.toInt() * it.quantidade.toInt()
-                resultado += multiplicacao
+                val multiplicacao = it.valor.times(it.quantidade)
+                resultado = resultado.plus(multiplicacao)
         }
-        val bdResultado = BigDecimal(resultado)
-        campoValorTotal.text = bdResultado.formataParaMoedaBrasileira()
+        campoValorTotal.text = resultado.formataParaMoedaBrasileira()
     }
 
     fun configuraFAB() {
