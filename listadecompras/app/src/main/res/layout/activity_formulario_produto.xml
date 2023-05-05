@@ -50,11 +50,11 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/activity_formulario_produto_textinput_unidade"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="digite a unidade de medida"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/activity_formulario_produto_botao_selecionar_unidade"
             app:layout_constraintTop_toBottomOf="@id/activity_formulario_produto_textinput_quantidade">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -63,7 +63,22 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:maxLength="5" />
+
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/activity_formulario_produto_botao_selecionar_unidade"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="#FFFDFD"
+            app:icon="@drawable/baseline_arrow_drop_down_24"
+            app:iconTint="#0E0E0E"
+            app:layout_constraintBottom_toBottomOf="@id/activity_formulario_produto_textinput_unidade"
+            app:layout_constraintEnd_toStartOf="@id/activity_formulario_produto_textinput_unidade"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_formulario_produto_textinput_quantidade" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/activity_formulario_produto_textinput_valor"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

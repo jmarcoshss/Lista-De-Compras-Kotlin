@@ -1,16 +1,17 @@
 package com.example.listadecompras.ui.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.MenuItem
+import android.view.View
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.example.listadecompras.R
 import com.example.listadecompras.data.LdcDataBase
 import com.example.listadecompras.databinding.ActivityFormularioProdutoBinding
-import com.example.listadecompras.model.Lista
 import com.example.listadecompras.model.Produto
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
@@ -27,9 +28,9 @@ class FormularioProdutoActivity : ListaBaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         configuraBotaoSalvar()
+        configuraBotaoPopup()
         title = "Cadastrar Novo Produto"
         editar()
-
         lifecycleScope.launch {
             lista.filterNotNull().collect {
 
@@ -82,7 +83,7 @@ class FormularioProdutoActivity : ListaBaseActivity() {
         }
     }
 
-   private fun criaProduto(listaId:Long): Produto {
+    private fun criaProduto(listaId: Long): Produto {
         val campoNome = binding.activityFormularioProdutoNome
         val nome = campoNome.text.toString()
         val campoQuantidade = binding.activityFormularioProdutoQuantidade
@@ -94,13 +95,13 @@ class FormularioProdutoActivity : ListaBaseActivity() {
         }
         val campoUnidade = binding.activityFormularioProdutoUnidade
         val unidade = campoUnidade.text.toString()
-       val campoValor = binding.activityFormularioProdutoValor
-       val valorEmTexto = campoValor.text.toString()
-       val valor = if (valorEmTexto.isBlank()) {
-           BigDecimal.ZERO
-       } else {
-           BigDecimal(valorEmTexto)
-       }
+        val campoValor = binding.activityFormularioProdutoValor
+        val valorEmTexto = campoValor.text.toString()
+        val valor = if (valorEmTexto.isBlank()) {
+            BigDecimal.ZERO
+        } else {
+            BigDecimal(valorEmTexto)
+        }
 
 
 
@@ -115,5 +116,39 @@ class FormularioProdutoActivity : ListaBaseActivity() {
 
     }
 
+    fun configuraBotaoPopup() {
+        val botao = binding.activityFormularioProdutoBotaoSelecionarUnidade
 
+        botao.setOnClickListener {
+            popUpMenuFormularioProduto(botao)
+        }
+    }
+
+    private fun popUpMenuFormularioProduto(it: View?) {
+        val campoUnidade = binding.activityFormularioProdutoUnidade
+        val popup = PopupMenu(this, it)
+        popup.inflate(R.menu.formulario_produto_menu_unidade)
+        popup.setOnMenuItemClickListener { item: MenuItem? ->
+            when (item?.itemId) {
+                R.id.formulario_produto_menu_unidade_X -> {
+                    campoUnidade.setText("X")
+                    true
+                }
+                R.id.formulario_produto_menu_unidade_kg -> {
+                    campoUnidade.setText("Kg")
+                    true
+                }
+                R.id.formulario_produto_menu_unidade_escrita_livre -> {
+                    Toast.makeText(this, "digite a unidade no campo unidade", Toast.LENGTH_SHORT)
+                        .show()
+                    true
+                }
+
+                else -> false
+            }
+        }
+        popup.show()
+
+    }
 }
+

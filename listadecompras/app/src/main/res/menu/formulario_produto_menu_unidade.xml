@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/formulario_produto_menu_unidade_X"
+        android:title="X" />
+    <item
+        android:id="@+id/formulario_produto_menu_unidade_kg"
+        android:title="Kg" />
+    <item
+        android:id="@+id/formulario_produto_menu_unidade_escrita_livre"
+        android:title="escrita livre" />
+</menu>
